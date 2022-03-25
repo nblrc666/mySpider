@@ -41,21 +41,13 @@ object ProCityAnalyse {
     val configuration: Configuration = sc.hadoopConfiguration
     // 文件系统对象。
     val fs: FileSystem = FileSystem.get(configuration)
-
-    var path = new Path(outputPath)
+    val path = new Path(outputPath)
     if(fs.exists(path)){
       fs.delete(path,true)
     }
-    resDF.coalesce(1).write.partitionBy("provincename","cityname")json(outputPath)
-
+    resDF.coalesce(1).write.partitionBy("provincename","cityname").save(outputPath)
     spark.stop()
     sc.stop()
-
-
-
-
-
-
 
   }
 
